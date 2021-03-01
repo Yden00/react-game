@@ -61,12 +61,16 @@ h2 {
 }
 
 .board {
-  padding: 0 33vw;
+  margin: 0 auto;
+  width: 32vw;
   grid-row: row 2;
+  padding: 15px;
+  background-color: #bbada0;
+  border-radius: 6px;
 }
 
 .explanation {
-  padding: 0 33vw;
+  padding: 15px 33vw 0 33vw;
   grid-row: row 3;
   color: #776e65;
   font-family: sans-serif;

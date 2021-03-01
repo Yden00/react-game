@@ -1,7 +1,7 @@
 import "./app.css";
 import './index.css';
 import React from "react";
-import Board from "./components/board/board";
+import Board from "./components/board";
 
 export default function App() {
   return (
@@ -27,7 +27,7 @@ export default function App() {
         same number touch, they <b>merge into one!</b>
       </p>
       <footer>
-        <img className="logo" src="./assets/rs_school_js.svg" alt="logo" />
+        <img className="logo" src="/assets/rs_school_js.svg" alt="logo" />
         <a href="https://rs.school/js/">RSSchool</a>
         <div className="info">
           <a href="https://github.com/ue4prog">My github account</a>
