@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 
 function createBoard(): number[][] {
   const board = [
@@ -28,60 +27,69 @@ function generateRandomIndex(board: number[][]): { x: number; y: number } {
 }
 
 function generateRandomCell(board: number[][]): any {
-  const {x, y} = generateRandomIndex(board)
-  return  board[y][x] === 0 ? board[y][x] = (Math.random() <= 0.7 ? 2 : 4) : generateRandomCell(board);
+  const { x, y } = generateRandomIndex(board);
+  if (board[y][x] === 0) {
+    board[y][x] = Math.random() <= 0.7 ? 2 : 4;
+    return board;
+  } else {
+    generateRandomCell(board);
+  }
 }
-
-
-
-
 
 export default function Board() {
   const [board, onChangeBoard] = useState(createBoard());
 
-  const move = (gameBoard: number[][], direction:{ vectorY:number, vectorX: number }):number[][]  => {
-    for (let x = 0; x <= 3; x++) {    
-      for(let i= 0 ; i <= 3 ; i++){
-        if(i + direction.vectorY >= 0){
+  const move = (
+    gameBoard: number[][],
+    direction: { vectorY: number; vectorX: number }
+  ): number[][] => {
+    const newBoard = [...gameBoard];
+    for (let x = 0; x <= 3; x++) {
+      for (let i = 0; i <= 3; i++) {
+        if (i + direction.vectorY >= 0) {
           for (let j = 0; j <= 3; j++) {
-            if(j + direction.vectorX >= 0){
-            if(i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === 0){
-              gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j]
-             gameBoard[i][j] = 0 
-            } else if (i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === gameBoard[i][j]) {
-              gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j] * 2
-             gameBoard[i][j] = 0 
+            if (j + direction.vectorX >= 0) {
+              if (
+                i + direction.vectorY <= 3 &&
+                newBoard[i + direction.vectorY][j + direction.vectorX] === 0
+              ) {
+                newBoard[i + direction.vectorY][j + direction.vectorX] =
+                  newBoard[i][j];
+                newBoard[i][j] = 0;
+              } else if (
+                i + direction.vectorY <= 3 &&
+                newBoard[i + direction.vectorY][j + direction.vectorX] ===
+                  newBoard[i][j]
+              ) {
+                newBoard[i + direction.vectorY][j + direction.vectorX] =
+                  newBoard[i][j] * 2;
+                newBoard[i][j] = 0;
+              }
             }
           }
         }
-        }
-        }
+      }
     }
-    return gameBoard 
-  }
-
+    return  generateRandomCell([...newBoard]);
+  };
   const makeTurn = (direction: string): void => {
     switch (direction) {
       case "ArrowUp":
-        debugger
-        onChangeBoard(move(board, { vectorX: 0 , vectorY: -1}));
+        onChangeBoard(move(board, { vectorX: 0, vectorY: -1 }));
         break;
       case "ArrowDown":
-        onChangeBoard(move(board, { vectorX: 0 , vectorY: 1}));
-        //generateRandomCell(board) ;
+        onChangeBoard(move(board, { vectorX: 0, vectorY: 1 }));
         break;
       case "ArrowRight":
-        onChangeBoard(move(board,  { vectorX: 1 , vectorY: 0}));
-        // generateRandomCell(board);
+        onChangeBoard(move(board, { vectorX: 1, vectorY: 0 }));
         break;
       case "ArrowLeft":
-        onChangeBoard(move(board, { vectorX: -1 , vectorY: 0}));
-        // generateRandomCell(board);
+        onChangeBoard(move(board, { vectorX: -1, vectorY: 0 }));
         break;
       default:
         break;
     }
-}
+  };
 
   const handleKeyPress = ({ key }: KeyboardEvent) => {
     switch (key) {
@@ -100,13 +108,26 @@ export default function Board() {
       default:
         break;
     }
-  }
+  };
 
-  window.addEventListener('keyup',handleKeyPress)
-  return <div className="board">
-    {
-      board.map((elem) => elem.map((el) => { 
-        return el === 0 ? <div className="cell empty"></div> : <div className="cell tile">{el}</div>
-      }))
-    }</div>;
+  useEffect(() => {
+    window.addEventListener("keyup", handleKeyPress);
+    return () => window.removeEventListener("keyup", handleKeyPress);
+  }, []);
+
+  return (
+    <div className="board">
+      {board.map((elem, index) =>
+        elem.map((el, childIndex) => {
+          return el === 0 ? (
+            <div key={`${index}-${childIndex}`} className="cell empty"></div>
+          ) : (
+            <div key={`${index}-${childIndex}`} className="cell tile">
+              {el}
+            </div>
+          );
+        })
+      )}
+    </div>
+  );
 }

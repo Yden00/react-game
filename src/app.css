@@ -1,7 +1,7 @@
 .app {
   display: grid;
   background-color: #FAF8EF;
-  grid-template-rows: [row] 20vh [row] 60vh [row] 8vh [row] 12vh;
+  grid-template-rows: [row] 20vh [row] 62vh [row] 8vh [row] 10vh;
 }
 
 a {
@@ -45,7 +45,7 @@ h2 {
   background-color: #bbada0;
   color: #ffffff;
   align-self: center;
-  height: 5vh;
+  height: 6vh;
   width: 100px;
   border-radius: 3px;
   text-align: center;
@@ -73,8 +73,7 @@ h2 {
   grid-template-rows: 13.3vh 13.3vh 13.3vh 13.3vh;
   gap: 13px;
   margin: 0 auto;
-  width: 32vw;
-  grid-row: row 2;
+  width: 32.5vw;
   padding: 15px;
   background-color: #bbada0;
   border-radius: 6px;
@@ -92,7 +91,7 @@ h2 {
   border-radius: 3px;
   text-align: center;
   text-align: center;
-  line-height: 2.5em;
+  line-height: 2em;
   font-size: 3em;
   font-weight: bold;
   color: #776E65;
