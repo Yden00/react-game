@@ -29,14 +29,57 @@ function generateRandomIndex(board: number[][]): { x: number; y: number } {
     : generateRandomIndex(board);
 }
 
-function makeTurn(direction: string): void {
-   
+function generateRandomCell(board: number[][]): any {
+  const {x, y} = generateRandomIndex(gameBoard)
+  return  board[y][x] === 0 ? board[y][x] = (Math.random() <= 0.7 ? 2 : 4) : generateRandomCell(board);
 }
-function moveUp(coordinate: { x: number; y: number }, gameBoard: number[][]){
-  if(gameBoard[coordinate.y-1][coordinate.x] === 0){
-    gameBoard[coordinate.y-1][coordinate.x] = gameBoard[coordinate.y][coordinate.x]
-    gameBoard[coordinate.y][coordinate.x] = 0 
-  } else return false
+
+
+function makeTurn(direction: string): void {
+    switch (direction) {
+      case "ArrowUp":
+        gameBoard = move(gameBoard, { vectorX: 0 , vectorY: -1})
+        generateRandomCell(gameBoard)
+        console.log(gameBoard)
+        break;
+      case "ArrowDown":
+        gameBoard = move(gameBoard, { vectorX: 0 , vectorY: 1})
+        generateRandomCell(gameBoard)
+        console.log(gameBoard)
+        break;
+      case "ArrowRight":
+        gameBoard = move(gameBoard, { vectorX: 1 , vectorY: 0})
+        generateRandomCell(gameBoard)
+        console.log(gameBoard)
+        break;
+      case "ArrowLeft":
+        gameBoard = move(gameBoard, { vectorX: -1 , vectorY: 0})
+        generateRandomCell(gameBoard)
+        console.log(gameBoard)
+        break;
+      default:
+        break;
+    }
+}
+function move(gameBoard: number[][], direction:{ vectorY:number, vectorX: number }):number[][]{
+  for (let x = 0; x <= 3; x++) {    
+    for(let i= 0 ; i <= 3 ; i++){
+      if(i + direction.vectorY >= 0){
+        for (let j = 0; j <= 3; j++) {
+          if(j + direction.vectorX >= 0){
+          if(i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === 0){
+            gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j]
+           gameBoard[i][j] = 0 
+          } else if (i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === gameBoard[i][j]) {
+            gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j] * 2
+           gameBoard[i][j] = 0 
+          }
+        }
+      }
+      }
+      }
+  }
+  return gameBoard
 }
 export default function Board() {
   function handleKeyPress({ key }: KeyboardEvent) {
@@ -58,5 +101,5 @@ export default function Board() {
     }
   }
   window.addEventListener('keyup',handleKeyPress)
-  return <div className="board" ></div>;
+  return <div className="board"></div>;
 }
