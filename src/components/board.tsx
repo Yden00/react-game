@@ -1,5 +1,5 @@
-import React from "react";
-let gameBoard: number[][] = [];
+import React, { useState } from "react";
+
 
 function createBoard(): number[][] {
   const board = [
@@ -17,8 +17,6 @@ function createBoard(): number[][] {
   return board;
 }
 
-gameBoard = createBoard();
-
 function generateRandomIndex(board: number[][]): { x: number; y: number } {
   const indexes = {
     x: Math.floor(Math.random() * 4),
@@ -30,59 +28,62 @@ function generateRandomIndex(board: number[][]): { x: number; y: number } {
 }
 
 function generateRandomCell(board: number[][]): any {
-  const {x, y} = generateRandomIndex(gameBoard)
+  const {x, y} = generateRandomIndex(board)
   return  board[y][x] === 0 ? board[y][x] = (Math.random() <= 0.7 ? 2 : 4) : generateRandomCell(board);
 }
 
 
-function makeTurn(direction: string): void {
+
+
+
+export default function Board() {
+  const [board, onChangeBoard] = useState(createBoard());
+
+  const move = (gameBoard: number[][], direction:{ vectorY:number, vectorX: number }):number[][]  => {
+    for (let x = 0; x <= 3; x++) {    
+      for(let i= 0 ; i <= 3 ; i++){
+        if(i + direction.vectorY >= 0){
+          for (let j = 0; j <= 3; j++) {
+            if(j + direction.vectorX >= 0){
+            if(i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === 0){
+              gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j]
+             gameBoard[i][j] = 0 
+            } else if (i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === gameBoard[i][j]) {
+              gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j] * 2
+             gameBoard[i][j] = 0 
+            }
+          }
+        }
+        }
+        }
+    }
+    return gameBoard 
+  }
+
+  const makeTurn = (direction: string): void => {
     switch (direction) {
       case "ArrowUp":
-        gameBoard = move(gameBoard, { vectorX: 0 , vectorY: -1})
-        generateRandomCell(gameBoard)
-        console.log(gameBoard)
+        debugger
+        onChangeBoard(move(board, { vectorX: 0 , vectorY: -1}));
         break;
       case "ArrowDown":
-        gameBoard = move(gameBoard, { vectorX: 0 , vectorY: 1})
-        generateRandomCell(gameBoard)
-        console.log(gameBoard)
+        onChangeBoard(move(board, { vectorX: 0 , vectorY: 1}));
+        //generateRandomCell(board) ;
         break;
       case "ArrowRight":
-        gameBoard = move(gameBoard, { vectorX: 1 , vectorY: 0})
-        generateRandomCell(gameBoard)
-        console.log(gameBoard)
+        onChangeBoard(move(board,  { vectorX: 1 , vectorY: 0}));
+        // generateRandomCell(board);
         break;
       case "ArrowLeft":
-        gameBoard = move(gameBoard, { vectorX: -1 , vectorY: 0})
-        generateRandomCell(gameBoard)
-        console.log(gameBoard)
+        onChangeBoard(move(board, { vectorX: -1 , vectorY: 0}));
+        // generateRandomCell(board);
         break;
       default:
         break;
     }
 }
-function move(gameBoard: number[][], direction:{ vectorY:number, vectorX: number }):number[][]{
-  for (let x = 0; x <= 3; x++) {    
-    for(let i= 0 ; i <= 3 ; i++){
-      if(i + direction.vectorY >= 0){
-        for (let j = 0; j <= 3; j++) {
-          if(j + direction.vectorX >= 0){
-          if(i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === 0){
-            gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j]
-           gameBoard[i][j] = 0 
-          } else if (i + direction.vectorY <= 3 && gameBoard[i + direction.vectorY][j + direction.vectorX] === gameBoard[i][j]) {
-            gameBoard[i + direction.vectorY][j + direction.vectorX] = gameBoard[i][j] * 2
-           gameBoard[i][j] = 0 
-          }
-        }
-      }
-      }
-      }
-  }
-  return gameBoard
-}
-export default function Board() {
-  function handleKeyPress({ key }: KeyboardEvent) {
+
+  const handleKeyPress = ({ key }: KeyboardEvent) => {
     switch (key) {
       case "ArrowUp":
         makeTurn(key);
@@ -100,6 +101,12 @@ export default function Board() {
         break;
     }
   }
+
   window.addEventListener('keyup',handleKeyPress)
-  return <div className="board"></div>;
+  return <div className="board">
+    {
+      board.map((elem) => elem.map((el) => { 
+        return el === 0 ? <div className="cell empty"></div> : <div className="cell tile">{el}</div>
+      }))
+    }</div>;
 }

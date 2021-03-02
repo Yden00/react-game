@@ -9,7 +9,7 @@ export default function App() {
       <header>
         <div className="title-container">
           <h1>2048</h1>
-          <div className="score-container"></div>
+          <div className="score-container">Score <p>12</p></div>
         </div>
 
         <div className="intro-container">

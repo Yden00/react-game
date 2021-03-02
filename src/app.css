@@ -41,9 +41,16 @@ h2 {
   color:#776e65;
 }
 
-/* .score-container {
-
-} */
+.score-container {
+  background-color: #bbada0;
+  color: #ffffff;
+  align-self: center;
+  height: 5vh;
+  width: 100px;
+  border-radius: 3px;
+  text-align: center;
+  font-size: 20px;
+} 
 
 .restart-btn {
   display: block;
@@ -61,12 +68,36 @@ h2 {
 }
 
 .board {
+  display: grid;
+  grid-template-columns: 7.5vw 7.5vw 7.5vw 7.5vw;
+  grid-template-rows: 13.3vh 13.3vh 13.3vh 13.3vh;
+  gap: 13px;
   margin: 0 auto;
   width: 32vw;
   grid-row: row 2;
   padding: 15px;
   background-color: #bbada0;
   border-radius: 6px;
+}
+
+
+
+.cell {
+  border-radius: 3px;
+  background-color: rgba(238,228,218,.35);
+  
+}
+
+.tile {
+  border-radius: 3px;
+  text-align: center;
+  text-align: center;
+  line-height: 2.5em;
+  font-size: 3em;
+  font-weight: bold;
+  color: #776E65;
+  font-family: sans-serif;
+  background-color: #eee4da;
 }
 
 .explanation {
