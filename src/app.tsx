@@ -1,15 +1,21 @@
 import "./app.css";
 import './index.css';
-import React from "react";
+import React, {useState} from "react";
 import Board from "./components/board";
 
 export default function App() {
+  const [score, setScore] = useState(0)
+
+  const handleClickRestart = () => {
+    
+  }
+
   return (
     <div className="app">
       <header>
         <div className="title-container">
           <h1>2048</h1>
-          <div className="score-container">Score <p>12</p></div>
+          <div className="score-container">Score<p>{score}</p></div>
         </div>
 
         <div className="intro-container">
@@ -17,10 +23,11 @@ export default function App() {
             <h2 className="subtitle">Play 2048 Game</h2>
             Join the numbers and get to the <b>2048 tile!</b>
           </div>
-          <button className="restart-btn">New Game</button>
+          <button onClick={handleClickRestart}className="restart-btn">New Game</button>
         </div>
       </header>
-      <Board />
+      {/* setScore = {setScore} */}
+      <Board  />
       <p className="explanation">
         <b>HOW TO PLAY: </b>
         Use your <b>arrow keys</b> to move the tiles. When two tiles with the
