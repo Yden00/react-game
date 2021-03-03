@@ -44,7 +44,7 @@ function generateRandomCell(board: number[][]): any {
 }
 let totalScore = 0;
 export default function Board(props : any) {
-  const [board, setBoard] = useState(createBoard());
+  const {board, setBoard} = props;
   const move = (
     gameBoard: number[][],
     direction: { vectorY: number; vectorX: number }
@@ -123,7 +123,7 @@ export default function Board(props : any) {
   });
   return (
     <div className="board">
-      {board.map((elem, index) =>
+      {board.map((elem: number[], index:number) =>
         elem.map((el, childIndex) => {
           return el === 0 ? (
             <div key={`${index}-${childIndex}`} className={'cell empty'}></div>
