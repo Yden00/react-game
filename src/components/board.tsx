@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 function createBoard(): number[][] {
   const board = [
@@ -7,6 +7,7 @@ function createBoard(): number[][] {
     [0, 0, 0, 0],
     [0, 0, 0, 0],
   ];
+  
   Array.from({ length: 2 }, () => (Math.random() <= 0.7 ? 2 : 4)).forEach(
     (el) => {
       const { x, y } = generateRandomIndex(board);
@@ -16,17 +17,21 @@ function createBoard(): number[][] {
   return board;
 }
 
-function generateRandomIndex(board: number[][]): { x: number; y: number } {
-  const indexes = {
-    x: Math.floor(Math.random() * 4),
-    y: Math.floor(Math.random() * 4),
-  };
-  return board[indexes.y][indexes.x] === 0
-    ? indexes
-    : generateRandomIndex(board);
+function generateRandomIndex(board: number[][]): any {
+  if(board.flat().find(el => el === 0) === 0){
+    const indexes = {
+      x: Math.floor(Math.random() * 4),
+      y: Math.floor(Math.random() * 4),
+    };
+    if(board[indexes.y][indexes.x] === 0){
+      return indexes
+    } 
+    else return generateRandomIndex(board);
+  }
 }
 
 function generateRandomCell(board: number[][]): any {
+  if(generateRandomIndex(board)){
   const { x, y } = generateRandomIndex(board);
   if (board[y][x] === 0) {
     board[y][x] = Math.random() <= 0.7 ? 2 : 4;
@@ -34,11 +39,12 @@ function generateRandomCell(board: number[][]): any {
   } else {
     generateRandomCell(board);
   }
+  }
+  return board 
 }
-
-export default function Board() {
-  const [board, onChangeBoard] = useState(createBoard());
-
+let totalScore = 0;
+export default function Board(props : any) {
+  const [board, setBoard] = useState(createBoard());
   const move = (
     gameBoard: number[][],
     direction: { vectorY: number; vectorX: number }
@@ -63,6 +69,8 @@ export default function Board() {
               ) {
                 newBoard[i + direction.vectorY][j + direction.vectorX] =
                   newBoard[i][j] * 2;
+                  totalScore += newBoard[i][j] * 2;
+                  props.setScore(totalScore)
                 newBoard[i][j] = 0;
               }
             }
@@ -75,16 +83,16 @@ export default function Board() {
   const makeTurn = (direction: string): void => {
     switch (direction) {
       case "ArrowUp":
-        onChangeBoard(move(board, { vectorX: 0, vectorY: -1 }));
+        setBoard(move(board, { vectorX: 0, vectorY: -1 }));
         break;
       case "ArrowDown":
-        onChangeBoard(move(board, { vectorX: 0, vectorY: 1 }));
+        setBoard(move(board, { vectorX: 0, vectorY: 1 }));
         break;
       case "ArrowRight":
-        onChangeBoard(move(board, { vectorX: 1, vectorY: 0 }));
+        setBoard(move(board, { vectorX: 1, vectorY: 0 }));
         break;
       case "ArrowLeft":
-        onChangeBoard(move(board, { vectorX: -1, vectorY: 0 }));
+        setBoard(move(board, { vectorX: -1, vectorY: 0 }));
         break;
       default:
         break;
@@ -109,20 +117,18 @@ export default function Board() {
         break;
     }
   };
-
   useEffect(() => {
     window.addEventListener("keyup", handleKeyPress);
     return () => window.removeEventListener("keyup", handleKeyPress);
-  }, []);
-
+  });
   return (
     <div className="board">
       {board.map((elem, index) =>
         elem.map((el, childIndex) => {
           return el === 0 ? (
-            <div key={`${index}-${childIndex}`} className="cell empty"></div>
+            <div key={`${index}-${childIndex}`} className={'cell empty'}></div>
           ) : (
-            <div key={`${index}-${childIndex}`} className="cell tile">
+            <div key={`${index}-${childIndex}`} className={"tile " + 'tile-' + el}>
               {el}
             </div>
           );

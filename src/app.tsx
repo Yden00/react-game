@@ -3,12 +3,10 @@ import './index.css';
 import React, {useState} from "react";
 import Board from "./components/board";
 
+
+
 export default function App() {
   const [score, setScore] = useState(0)
-
-  const handleClickRestart = () => {
-    
-  }
 
   return (
     <div className="app">
@@ -17,17 +15,15 @@ export default function App() {
           <h1>2048</h1>
           <div className="score-container">Score<p>{score}</p></div>
         </div>
-
         <div className="intro-container">
           <div>
             <h2 className="subtitle">Play 2048 Game</h2>
             Join the numbers and get to the <b>2048 tile!</b>
           </div>
-          <button onClick={handleClickRestart}className="restart-btn">New Game</button>
+          <button className="restart-btn">New Game</button>
         </div>
       </header>
-      {/* setScore = {setScore} */}
-      <Board  />
+      <Board setScore={setScore}/>
       <p className="explanation">
         <b>HOW TO PLAY: </b>
         Use your <b>arrow keys</b> to move the tiles. When two tiles with the

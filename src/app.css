@@ -69,29 +69,25 @@ h2 {
 
 .board {
   display: grid;
-  grid-template-columns: 7.5vw 7.5vw 7.5vw 7.5vw;
-  grid-template-rows: 13.3vh 13.3vh 13.3vh 13.3vh;
+  grid-template-columns:23% 23% 23% 23%;
+  grid-template-rows: 23% 23% 23% 23%;
   gap: 13px;
   margin: 0 auto;
-  width: 32.5vw;
-  padding: 15px;
+  width: 30%;
+  padding: 1%;
   background-color: #bbada0;
   border-radius: 6px;
 }
 
-
-
 .cell {
   border-radius: 3px;
   background-color: rgba(238,228,218,.35);
-  
 }
 
 .tile {
   border-radius: 3px;
   text-align: center;
-  text-align: center;
-  line-height: 2em;
+  line-height: 13.5vh;
   font-size: 3em;
   font-weight: bold;
   color: #776E65;
@@ -124,4 +120,59 @@ footer {
 
 .info p{
   margin: 0;
+}
+.tile-2 {
+  background: #eee4da;
+}
+.tile-4 {
+  background: #ede0c8;
+}
+.tile-8 {
+  color: #f9f6f2;
+  background: #f2b179;
+}
+.tile-16 {
+  color: #f9f6f2;
+  background: #f59563;
+}
+.tile-32 {
+  color: #f9f6f2;
+  background: #f67c5f;
+}
+.tile-64 {
+  color: #f9f6f2;
+  background: #f65e3b;
+}
+.tile-128 {
+  color: #f9f6f2;
+  background: #edcf72;
+  font-size: 45px;
+}
+
+.tile-256 {
+  color: #f9f6f2;
+  background: #edcc61;
+  font-size: 45px;
+}
+.tile-512 {
+  color: #f9f6f2;
+  background: #edc850;
+  font-size: 45px;
+}
+
+.tile-1024 {
+  color: #f9f6f2;
+  background: #edc53f;
+  font-size: 35px;
+}
+
+.tile-2048 {
+  color: #f9f6f2;
+  background: #edc22e;
+  font-size: 35px;
+}
+.game-over {
+  top: 50%;
+  left: 50%;
+  position: absolute;
 }
